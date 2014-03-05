@@ -25,20 +25,20 @@ var generateContents = function (comments, newLine) {
     };
 
     comments.forEach(function (comment) {
-        output[comment.kind] += '| ' + comment.file + ' | ' + comment.line + ' | ' + comment.text + newLine;
+        output[comment.kind] += comment.file + ':' + comment.line + ': ' + comment.text + newLine;
     });
 
     var contents;
 
-    contents = '### TODOs' + newLine;
-    contents += '| Filename | line # | todo' + newLine;
-    contents += '|:--------:|:------:|:------:' + newLine;
-    contents += output.TODO + newLine + newLine;
+    contents = 'TODO:' + newLine;
+    // contents += 'File | line # | todo' + newLine;
+    // contents += '|:--------:|:------:|:------:' + newLine;
+    contents += '- ' + output.TODO + newLine + newLine;
 
-    contents += '### FIXMEs' + newLine;
-    contents += '| Filename | line # | fixme' + newLine;
-    contents += '|:--------:|:------:|:------:' + newLine;
-    contents += output.FIXME;
+    contents += 'FIXME:' + newLine;
+    // contents += '| File | line # | fixme' + newLine;
+    // contents += '|:--------:|:------:|:------:' + newLine;
+    contents += '- ' + output.FIXME;
 
     return contents;
 };
@@ -106,7 +106,7 @@ var getCommentsFromAst = function (ast, file) {
 module.exports = function (params) {
     params = params || {};
     //target filename
-    var fileName = params.fileName || 'todo.md';
+    var fileName = params.fileName || 'todo.todo';
     //first file to capture cwd
     var firstFile;
     //newline separator
