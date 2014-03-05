@@ -1,11 +1,11 @@
 # [gulp](https://github.com/wearefractal/gulp)-todo
-> Generate a TODO.md file from your javascript todos and fixmes
+> Generate a TODO.todo file from your javascript todos and fixmes
 
 [![NPM Version](http://img.shields.io/npm/v/gulp-todo.svg)](https://npmjs.org/package/gulp-todo)
 [![Gittip](http://img.shields.io/gittip/pgilad.svg)](https://www.gittip.com/pgilad/)
 [![Dependencies](http://img.shields.io/gemnasium/pgilad/gulp-todo.svg)](https://gemnasium.com/pgilad/gulp-todo)
 
-Parse all your javascript files through Esprima, and generate a todo.md
+Parse all your javascript files through Esprima, and generate a todo.todo
 
 ## Install
 
@@ -32,7 +32,7 @@ gulp.task('default', function() {
 
 Options can be passed along as an object containing the following fields:
 
-`filename` - contains the output filename. default is: `todo.md`.
+`filename` - contains the output filename. default is: `todo.todo`.
 
 `newLine` - How to seperate the lines. defaults to your OS's default line seperator.
 
@@ -41,7 +41,7 @@ Options can be passed along as an object containing the following fields:
 
 ```js
 {
-    fileName: 'todo.md',
+    fileName: 'todo.todo',
     newLine: '\n'
 }
 ```
