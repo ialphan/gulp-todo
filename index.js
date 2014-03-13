@@ -5,9 +5,9 @@ var esprima = require('esprima');
 var path = require('path');
 
 //test for comments that have todo/fixme + text
-var rCommentsValidator = /^(\W)*(TODO|FIXME)+(?:\s)*?(?:\S)+/i;
+var rCommentsValidator = /^(\W)*(TODO|FIXME|NOTE)+(?:\s)*?(?:\S)+/i;
 //split todo/fixme comments
-var rCommentsSplit = /(TODO|FIXME):?/i;
+var rCommentsSplit = /(TODO|FIXME|NOTE):?/i;
 
 /**
  * generateContents
@@ -21,24 +21,24 @@ var rCommentsSplit = /(TODO|FIXME):?/i;
 var generateContents = function (comments, newLine) {
     var output = {
         TODO: '',
-        FIXME: ''
+        FIXME: '',
+        NOTE: ''
     };
 
     comments.forEach(function (comment) {
-        output[comment.kind] += comment.file + ':' + comment.line + ': ' + comment.text + newLine;
+        output[comment.kind] += '- ' + comment.file + ':' + comment.line + ': ' + comment.text + newLine;
     });
 
     var contents;
 
     contents = 'TODO:' + newLine;
-    // contents += 'File | line # | todo' + newLine;
-    // contents += '|:--------:|:------:|:------:' + newLine;
-    contents += '- ' + output.TODO + newLine + newLine;
+    contents += output.TODO + newLine + newLine;
 
     contents += 'FIXME:' + newLine;
-    // contents += '| File | line # | fixme' + newLine;
-    // contents += '|:--------:|:------:|:------:' + newLine;
-    contents += '- ' + output.FIXME;
+    contents += output.FIXME + newLine + newLine;
+
+    contents += 'NOTE:' + newLine;
+    contents += output.NOTE + newLine + newLine;
 
     return contents;
 };
@@ -107,6 +107,7 @@ module.exports = function (params) {
     params = params || {};
     //target filename
     var fileName = params.fileName || 'todo.todo';
+
     //first file to capture cwd
     var firstFile;
     //newline separator
@@ -144,18 +145,24 @@ module.exports = function (params) {
                 firstFile = file;
             }
 
+
+
+
             //todo better rename
             comments = comments.concat(getCommentsFromAst(ast, file));
+
 
             return cb();
         },
         function (cb) {
+
             if (!firstFile || !comments.length) {
                 return cb();
             }
 
             //get generated output
             var contents = generateContents(comments, newLine);
+
             //build stream file
             var mdFile = new gutil.File({
                 cwd: firstFile.cwd,
